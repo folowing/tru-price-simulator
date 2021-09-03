@@ -1,5 +1,3 @@
-from secrets import token_bytes
-
 from eth import constants
 from eth.chains.base import MiningChain
 from eth.consensus.pow import mine_pow_nonce
@@ -9,6 +7,8 @@ from eth.vm.forks.berlin import BerlinVM
 from eth_abi import encode_abi, decode_abi
 from eth_keys import keys
 from eth_utils import to_wei, from_wei, function_signature_to_4byte_selector
+
+from secrets import token_bytes
 
 
 def ether(n, to_unit='ether'):
@@ -68,7 +68,7 @@ class Ethereum:
 
     self.chain.mine_block(mix_hash=mix_hash, nonce=nonce)
   
-  def call(self, sender, address, name, arguments, value=0, gas=1_000_000):
+  def call(self, sender, address, name, arguments, value=0, gas=constants.GAS_LIMIT_MAXIMUM // 100):
     tx = self.vm \
              .create_unsigned_transaction(
                 to=address, 
